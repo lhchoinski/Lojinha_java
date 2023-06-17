@@ -5,53 +5,53 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import com.luiz.modelos.Cliente;
+import com.luiz.modelos.Funcionario;
 
 import java.util.List;
 
-public class ClienteDAO {
+public class FuncionarioDAO {
     private EntityManagerFactory emf;
 
-    public ClienteDAO() {
+    public FuncionarioDAO() {
         emf = Persistence.createEntityManagerFactory("my-persistence-unit");
     }
 
-    public void salvarCliente(Cliente cliente) {
+    public void salvarFuncionario(Funcionario funcionario) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.persist(cliente);
+        em.persist(funcionario);
         em.getTransaction().commit();
         em.close();
     }
 
-    public Cliente buscarClientePorId(Long id) {
+    public Funcionario buscarFuncionarioPorId(Long id) {
         EntityManager em = emf.createEntityManager();
-        Cliente cliente = em.find(Cliente.class, id);
+        Funcionario funcionario = em.find(Funcionario.class, id);
         em.close();
-        return cliente;
+        return funcionario;
     }
 
-    public List<Cliente> buscarTodosClientes() {
+    public List<Funcionario> buscarTodosFuncionario() {
         EntityManager em = emf.createEntityManager();
-        Query query = em.createQuery("SELECT c FROM Cliente c");
-        List<Cliente> clientes = query.getResultList();
+        Query query = em.createQuery("SELECT f FROM Funcionario f");
+        List<Funcionario> funcionarios = query.getResultList();
         em.close();
-        return clientes;
+        return funcionarios;
     }
 
-    public void atualizarCliente(Cliente cliente) {
+    public void atualizarFuncionario(Funcionario funcionario) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.merge(cliente);
+        em.merge(funcionario);
         em.getTransaction().commit();
         em.close();
     }
 
-    public void excluirCliente(Cliente cliente) {
+    public void excluirFuncionario(Funcionario funcionario) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        cliente = em.merge(cliente);
-        em.remove(cliente);
+        funcionario = em.merge(funcionario);
+        em.remove(funcionario);
         em.getTransaction().commit();
         em.close();
     }

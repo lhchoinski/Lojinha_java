@@ -33,23 +33,23 @@ public class ProdutoDAO {
 
     public List<Produto> buscarTodosProdutos() {
         EntityManager em = emf.createEntityManager();
-        Query query = em.createQuery("SELECT p FROM produto p");
+        Query query = em.createQuery("SELECT p FROM Produto p");
         List<Produto> produtos = query.getResultList();
         em.close();
         return produtos;
     }
 
     public List<Produto> buscarTodasAlcoolicas(){
-          EntityManager em = emf.createEntityManager();
-        Query query = em.createQuery("SELECT c FROM alcoolicas c");
+        EntityManager em = emf.createEntityManager();
+        Query query = em.createQuery("SELECT p FROM Produto p WHERE p.condicao = 'alcoolica'");
         List<Produto> produtos = query.getResultList();
         em.close();
         return produtos;
     }
 
     public List<Produto> buscarTodasNaoAlcoolicas(){
-          EntityManager em = emf.createEntityManager();
-        Query query = em.createQuery("SELECT c FROM naoalcoolicas c");
+        EntityManager em = emf.createEntityManager();
+        Query query = em.createQuery("SELECT p FROM Produto p WHERE p.condicao = 'NaoAlcoolica'");
         List<Produto> produtos = query.getResultList();
         em.close();
         return produtos;
@@ -63,7 +63,7 @@ public class ProdutoDAO {
         em.close();
     }
 
-   public void excluirProduto(Produto produto) {
+    public void excluirProduto(Produto produto) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         produto = em.merge(produto);
