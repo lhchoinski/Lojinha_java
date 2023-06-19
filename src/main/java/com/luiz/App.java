@@ -54,7 +54,7 @@ public class App {
                 System.out.println("4 - Excluir Cliente ");
 
                 int opcao_cliente = scanner.nextInt();
-
+            
                 //SWITCH MENU CLIENTE
                 switch (opcao_cliente) {
 
@@ -118,26 +118,21 @@ public class App {
                 System.out.println("Selecione um procedimento:");
                 System.out.println("1 - Cadastrar Pedido");
                 System.out.println("2 - Listar Pedidos ");
-                System.out.println("3 - Atualizar Pedido ");
-                System.out.println("4 - Excluir Pedido ");
+                System.out.println("3 - Excluir Pedido ");
 
 
                 int opcao_pedido = scanner.nextInt();
                 switch (opcao_pedido) {
 
                     case 1:
-                        cadastrarPedido(scanner, pedidoDAO);
+                        cadastrarPedido(scanner, pedidoDAO,produtoDAO,funcionarioDAO, clienteDAO);
                         break;
 
                     case 2:
-                        listarPedido(pedidoDAO);
+                        listarPedido(scanner, pedidoDAO);
                         break;
 
                     case 3:
-                       atualizarPedido(scanner, pedidoDAO);
-                        break;
-
-                    case 4:
                         excluirPedido(scanner, pedidoDAO);
                         break;
 
@@ -192,11 +187,8 @@ public class App {
         emf.close();
     }
 
-    //FUNÇOES
-
-
+   
     //FUNCOES CRUD - CLIENTE
-    //concluido
 
     private static void cadastrarCliente(Scanner scanner, ClienteDAO clienteDAO) {
         System.out.println("Cadastro de Cliente");
@@ -338,9 +330,9 @@ public class App {
             System.out.println("preço: " + produto.getPreco());
             
         }
-       
-    }
 
+        }
+       
     private static void atualizarProduto(Scanner scanner, ProdutoDAO produtoDAO) {
         System.out.println("Atualizar Produto");
 
@@ -399,32 +391,77 @@ public class App {
         }
     }
 
-    //FUNCOES CRUD - PEDIDO
 
-     private static void cadastrarPedido(Scanner scanner, PedidoDAO pedidoDAO) {
-        System.out.println("Cadastro de Pedido");
+  private static void cadastrarPedido(Scanner scanner, PedidoDAO pedidoDAO, ProdutoDAO produtoDAO, FuncionarioDAO funcionarioDAO, ClienteDAO clienteDAO) {
+  System.out.println("Cadastro de Pedido");
 
-       
+System.out.print("ID do Cliente: ");
+Long idCliente = scanner.nextLong();
+scanner.nextLine(); // Limpar o buffer do scanner
+
+System.out.print("ID do Funcionário: ");
+Long idFuncionario = scanner.nextLong();
+scanner.nextLine(); // Limpar o buffer do scanner
+
+System.out.print("ID do Produto: ");
+Long idProduto = scanner.nextLong();
+scanner.nextLine(); // Limpar o buffer do scanner
+
+// Buscar informações do cliente, funcionário e produto nas respectivas tabelas
+Cliente cliente = clienteDAO.buscarClientePorId(idCliente);
+Funcionario funcionario = funcionarioDAO.buscarFuncionarioPorId(idFuncionario);
+Produto produto = produtoDAO.buscarProdutoPorId(idProduto);
+
+if (cliente != null && funcionario != null && produto != null) {
+    // Criar o objeto Pedido com os dados informados e as informações obtidas
+    Pedido novoPedido = new Pedido(produto.getNomeProduto(), cliente.getNome(), funcionario.getNome());
+
+    // Adicionar o novo pedido ao DAO (ou realizar a operação de salvamento em um banco de dados)
+    pedidoDAO.adicionarPedido(novoPedido);
+
+    System.out.println("Pedido cadastrado com sucesso!");
+} else {
+    System.out.println("Não foi possível cadastrar o pedido. Verifique os IDs informados.");
+}
+
     }
 
-    private static void listarPedido(PedidoDAO pedidoDAO) {
-        System.out.println("Lista de Pedido:");
+   private static void listarPedido(Scanner scanner, PedidoDAO pedidoDAO) {
+    System.out.println("Listagem de Pedidos");
 
+    for (Pedido pedido : pedidoDAO.buscarTodosPedidos()) {
+            System.out.println("ID: " + pedido.getId());
+            System.out.println("Produto: " + pedido.getNomeProduto());
+            System.out.println("Cliente: " + pedido.getNomeCliente());
+            System.out.println("Vendedor: " + pedido.getNomeFuncionario());
+            System.out.println("--------------------");
+            
+        }
+
+        }
+
+private static void excluirPedido(Scanner scanner, PedidoDAO pedidoDAO) {
+    System.out.println("Excluir Pedido");
+
+    // Solicitar o ID do pedido que deseja excluir ao usuário
+    System.out.print("ID do Pedido: ");
+    long id = scanner.nextInt();
+
+    // Verificar se o pedido com o ID informado existe no DAO (ou no banco de dados)
+    Pedido pedidoExistente = pedidoDAO.buscarPedidoPorId(id);
+
+    if (pedidoExistente == null) {
+        System.out.println("Pedido não encontrado.");
+    } else {
+        // Excluir o pedido do DAO (ou do banco de dados)
+        pedidoDAO.excluirPedido(pedidoExistente);
+
+        System.out.println("Pedido excluído com sucesso!");
     }
+}
 
-    private static void atualizarPedido(Scanner scanner, PedidoDAO pedidoDAO) {
-        System.out.println("Atualizar Pedido");
-
-      
-    }
-
-    private static void excluirPedido(Scanner scanner, PedidoDAO pedidoDAO) {
-        System.out.println("Pedido Cliente");
-
-    }
 
     //FUNCOES CRUD - FUCIONARIO
-    //concluido
 
      private static void cadastrarFuncionario(Scanner scanner, FuncionarioDAO funcionarioDAO) {
         System.out.println("Cadastro de Funcionario");

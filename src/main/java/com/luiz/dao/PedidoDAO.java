@@ -16,7 +16,7 @@ public class PedidoDAO {
         emf = Persistence.createEntityManagerFactory("my-persistence-unit");
     }
 
-    public void salvarPedido(Pedido pedido) {
+    public void adicionarPedido(Pedido pedido) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(pedido);
@@ -33,7 +33,7 @@ public class PedidoDAO {
 
     public List<Pedido> buscarTodosPedidos() {
         EntityManager em = emf.createEntityManager();
-        Query query = em.createQuery("SELECT p FROM pedido p");
+        Query query = em.createQuery("SELECT p FROM Pedido p");
         List<Pedido> pedidos = query.getResultList();
         em.close();
         return pedidos;

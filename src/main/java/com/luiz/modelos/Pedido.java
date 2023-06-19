@@ -11,22 +11,19 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @ManyToOne
-    protected Produto nomeProduto;
+    protected String nomeProduto;
 
-    @ManyToOne
-    protected Cliente nome;
+    protected String nomeCliente;
 
-    @ManyToOne
-    protected Funcionario nomeFuncionario;
+    protected String nomeFuncionario;
 
-    protected Pedido() {
+    public Pedido() {
         // Construtor padrão exigido pelo Hibernate
     }
 
-    public Pedido(Produto nomeProduto, Cliente nome, Funcionario nomeFuncionario) {
+    public Pedido(String nomeProduto, String nomeCliente, String nomeFuncionario) {
         this.nomeProduto = nomeProduto;
-        this.nome = nome;
+        this.nomeCliente = nomeCliente;
         this.nomeFuncionario = nomeFuncionario;
     }
 
@@ -34,37 +31,32 @@ public class Pedido {
         return id;
     }
 
-    public Produto getNomeProduto() {
+    public String getNomeProduto() {
         return nomeProduto;
     }
 
-    public void setNomeProduto(Produto nomeProduto) {
-        this.nomeProduto = nomeProduto;
+    public void setNomeProduto(String novoProduto) {
+        this.nomeProduto = novoProduto;
     }
 
-    public Cliente getNome() {
-        return nome;
+    public String getNomeCliente() {
+        return nomeCliente;
     }
 
-    public void setNome(Cliente nome) {
-        this.nome = nome;
+    public void setNomeCliente(String novoCliente) {
+        this.nomeCliente = novoCliente;
     }
 
-     public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Funcionario getNomeFuncionario() {
+    public String getNomeFuncionario() {
         return nomeFuncionario;
     }
 
-    public void setNomeFuncionario(Funcionario nomeFuncionario) {
+    public void setNomeFuncionario(String nomeFuncionario) {
         this.nomeFuncionario = nomeFuncionario;
     }
 
     @Override
     public String toString() {
-        return "Pedido [id=" + id + ", nomeProduto=" + nomeProduto + ", nome=" + nome + "]";
+        return "Pedido [id=" + id + ", nomeProduto=" + nomeProduto + ", nomeCliente=" + nomeCliente + "]";
     }
-
 }
